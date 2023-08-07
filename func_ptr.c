@@ -36,3 +36,76 @@ int main(void) {
 
 	return 0;
 }
+
+char showmenu(void) {
+	char ans;
+
+	puts("Enter menu choice:");
+	puts("u) uppercase			l) lowercase");
+	puts("t) transposed case	o) original case");
+	puts("n) next string");
+	ans = getchar();		//获取用户的输入
+	ans = tolower(ans);	//转换为小写
+	eatline();					//清理输入行
+	while (strchr("ulton", ans) == NULL) {
+		puts("Please enter a u, l, t, o, or n:");
+		ans = tolower(getchar());
+		eatline();
+	}
+
+	return ans;
+}
+
+void eatline(void) {
+	while (getchar() != '\n')
+		continue;
+}
+
+void ToUpper(char* str) {
+	while (*str) {
+		*str = toupper(*str);
+		str++;
+	}
+}
+
+void ToLower(char* str) {
+	while (*str) {
+		*str = tolower(*str);
+		str++;
+	}
+}
+
+void Transpose(char* str) {
+	while (*str) {
+		if (islower(*str))
+			*str = toupper(*str);
+		else if (isupper(*str))
+			*str = tolower(*str);
+		str++;
+	}
+}
+
+void Dummy(char* str) {
+	//不改变字符串
+}
+
+void show(void(*fp)(char*), char* str) {
+	(*fp)(str);		//把用户选定的函数作用于str
+	puts(str);		//显示结果
+}
+
+char* s_gets(char* st, int n) {
+	char* ret_val;
+	char* find;
+
+	ret_val = fgets(st, n, stdin);
+	if (ret_val) {
+		find = strchr(st, '\n');	//查找换行符
+		if (find)							//如果地址不是NULL
+			*find = '\0';				//在此放置一个空字符
+		else
+			while (getchar() != '\n')
+				continue;				//清理输入行中剩余的字符
+	}
+	return ret_val;
+}
